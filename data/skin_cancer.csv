@@ -1,0 +1,17 @@
+age,ncases,popsize,city
+15-24,1,172675,Minneapolis - St Paul
+25-34,16,123065,Minneapolis - St Paul
+35-44,30,96216,Minneapolis - St Paul
+45-54,71,92051,Minneapolis - St Paul
+55-64,102,72159,Minneapolis - St Paul
+65-74,130,54722,Minneapolis - St Paul
+75-84,133,32185,Minneapolis - St Paul
+85+,40,8328,Minneapolis - St Paul
+15-24,4,181343,Dallas - Forth Worth
+25-34,38,146207,Dallas - Forth Worth
+35-44,119,121374,Dallas - Forth Worth
+45-54,221,111353,Dallas - Forth Worth
+55-64,259,83004,Dallas - Forth Worth
+65-74,310,55932,Dallas - Forth Worth
+75-84,226,29007,Dallas - Forth Worth
+85+,65,7583,Dallas - Forth Worth
