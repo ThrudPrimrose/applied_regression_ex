@@ -6,9 +6,10 @@
 
 library(tidyverse)
 library(dplyr)
-library(growthmodels)
 library(ggplot2)
-library(drc)
+library(ggfortify)
+library(nlstools)
+library(car)
 
 age <- c(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0)
 area <- c(2.02, 3.62, 5.71, 7.13, 8.33, 8.29, 9.81, 11.3, 12.18, 12.67, 10.62, 12.01)
@@ -42,11 +43,6 @@ create_fit_and_plot <- function(alpha, beta, gamma) {
 
   print(p)
   return(summary(m)$sigma)
-  #plot(age, area, main = str)
-  #lines(age, predict(m), col = "red", lty = 2, lwd = 3)
-
-  #m$residuals <- residuals(m);
-  #acf(ts(m$residuals))
 }
 
 # fit data for different gamme values between 0.1 and 0.9
@@ -75,22 +71,22 @@ create_fit_and_plot(alpha, beta, 0.36)
 create_fit_and_plot(alpha, beta, 0.35894)
 
 # now play around with alpha increase it by +1
-#for (i in 0:10) {
-# create_fit_and_plot(alpha, beta, 0.36)
-#alpha = alpha + 1.0
-#}
+for (i in 0:10) {
+  create_fit_and_plot(alpha, beta, 0.36)
+  alpha = alpha + 1.0
+}
 
 # now play around with beta increase it by +1
-#for (j in 0:10) {
-# create_fit_and_plot(alpha, beta, 0.36)
-# beta = beta + 1.0
-#}
+for (j in 0:10) {
+  create_fit_and_plot(alpha, beta, 0.36)
+  beta = beta + 1.0
+}
 
 # now play around with beta decrease it by +1
-#for (k in 0:10) {
-# create_fit_and_plot(alpha, beta, 0.36)
-# beta = beta - 1.0
-#}
+for (k in 0:10) {
+  create_fit_and_plot(alpha, beta, 0.36)
+  beta = beta - 1.0
+}
 
 m <- nls(area ~ a * exp(-b * exp(-0.35894 * age)), start = c(a = alpha, b = beta), control = list(maxiter = 50))
 summary(m)
@@ -125,6 +121,12 @@ p <- ggplot(palmdata, aes(x = age, y = area)) +
 
 print(p)
 
+plot(lm, which = 1)
+plot(lmsqr, which = 1)
+plot(nlsResiduals(m), which = 0)
+#plot(nlsResiduals(m), which = 5)
+#plot(nlsResiduals(m), which = 6)
+
 p <- ggplot(palmdata, aes(x = age, y = area)) +
   geom_point() +
   xlim(1, 20) +
@@ -150,3 +152,6 @@ p <- ggplot(palmdata, aes(x = age, y = area)) +
   scale_color_manual(values = colors)
 
 print(p)
+
+print("X")
+summary(anova(m, lmsqr))
