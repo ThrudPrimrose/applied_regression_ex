@@ -70,3 +70,31 @@ print(typeof(riskDallas))
 
 v <- riskMinnea / riskDallas
 print(v)
+
+cancer_fit_age_group <- glm(ncases ~ age + city, offset = log(popsize), data = crab, family = poisson(link = "log"))
+summary(cancer_fit_age_group)
+
+crab$fitted_group <- fitted(cancer_fit_age_group)
+crab$rates <- crab$ncases / crab$popsize
+
+ggplot(crab, aes(age, color = city)) +
+  geom_point(aes(y = rates)) +
+  geom_point(aes(y = fitted_group / popsize), shape = 5, size = 3)
+
+
+cancer_fit_age_cont <- glm(ncases ~ poly(age_i, 2, raw = TRUE) +
+  city, offset = log(popsize), data = crab, family = poisson(link = "log"))
+
+crab$fitted_i <- fitted(cancer_fit_age_cont)
+
+ggplot(crab, aes(age_i, color = city)) +
+  geom_point(aes(y = rates)) +
+  geom_line(aes(y = fitted_group / popsize, linetype = "model with grouped age")) +
+  geom_line(aes(y = fitted_i / popsize, linetype = "model with continuous age"))
+
+tmp <- ggplot(crab, aes(age_i, color = city)) +
+  geom_point(aes(y = ncases)) +
+  geom_line(aes(y = fitted_group / popsize, linetype = "model with grouped age")) +
+  geom_line(aes(y = fitted_i / popsize, linetype = "model with continuous age"))
+
+print(tmp)
